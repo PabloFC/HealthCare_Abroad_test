@@ -5,7 +5,7 @@ import { recordTriageError, recordTriageResult } from "@/lib/triageStore";
 import { validateTriageRequest } from "@/lib/triageSchemas";
 
 export async function POST(request: Request) {
-  const permission = requireAdminPermission();
+  const permission = requireAdminPermission(request);
 
   if (!permission.ok) {
     return NextResponse.json(
