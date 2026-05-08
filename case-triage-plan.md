@@ -86,6 +86,7 @@ Include the following metadata in responses and persistence:
 - Loading state while the analysis runs.
 - Clear error state with a human-readable message.
 - Success state displaying all structured fields.
+- Do not use inline `style` props or `<style>` tags.
 
 ## Persistence (Minimal)
 
@@ -101,7 +102,7 @@ Store fields:
 
 Mark each item with a check as it is completed.
 
-- [ ] Define request/response schemas and shared types.
+- [x] Define request/response schemas and shared types.
 - [ ] Build the admin API route with auth, permission check, and validation.
 - [ ] Create the AI service with strict JSON output and fallback handling.
 - [ ] Add minimal persistence layer.

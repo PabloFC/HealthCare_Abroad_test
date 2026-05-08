@@ -1,0 +1,9 @@
+node_modules/
+.agents/
+.next/
+.vercel/
+.env
+.env.*
+*.log
+.DS_Store
+skills-lock.json
