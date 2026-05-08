@@ -31,12 +31,38 @@ This plan outlines a focused implementation for the Case Triage Assistant using 
 - 422: invalid AI output (schema mismatch)
 - 500: provider errors or persistence failures
 
+## Design Notes (Deliverable)
+
+This document will be submitted with the final code changes and includes:
+
+- API contract (request/response and error codes)
+- Data flow (UI -> API -> AI -> validation -> persistence -> UI)
+- Error and fallback strategy
+- Security assumptions and permission model
+
 ## Trust Boundaries
 
 - Validate input before any DB or AI call.
 - Validate AI output strictly against a schema.
 - Only persist and return validated results.
 - Enforce admin-only access with an explicit permission check.
+
+## Validation Rules
+
+- Input length: reject `noteText` outside 1,000-5,000 characters.
+- Priority must be one of: Low, Medium, High, Critical.
+- Tags must be 3-6 items, lowercase, and snake_case.
+- Confidence must be between 0 and 100.
+- Summary must be non-empty and under 500 characters.
+
+## Response Metadata
+
+Include the following metadata in responses and persistence:
+
+- `modelUsed`
+- `promptVersion`
+- `durationMs`
+- `requestId`
 
 ## Data Flow
 
@@ -55,6 +81,12 @@ This plan outlines a focused implementation for the Case Triage Assistant using 
 - If the AI provider fails or times out, return a recoverable error message.
 - Do not attempt best-effort parsing of invalid AI output.
 
+## UX Expectations
+
+- Loading state while the analysis runs.
+- Clear error state with a human-readable message.
+- Success state displaying all structured fields.
+
 ## Persistence (Minimal)
 
 Store fields:
@@ -67,12 +99,27 @@ Store fields:
 
 ## Implementation Steps
 
-1. Define request/response schemas and shared types.
-2. Build the admin API route with auth, permission check, and validation.
-3. Create the AI service with strict JSON output and fallback handling.
-4. Add minimal persistence layer.
-5. Build the admin UI panel with loading/error/success states.
-6. Document assumptions, limitations, and next steps.
+Mark each item with a check as it is completed.
+
+- [ ] Define request/response schemas and shared types.
+- [ ] Build the admin API route with auth, permission check, and validation.
+- [ ] Create the AI service with strict JSON output and fallback handling.
+- [ ] Add minimal persistence layer.
+- [ ] Build the admin UI panel with loading/error/success states.
+- [ ] Document assumptions, limitations, and next steps.
+
+## Minimal Tests
+
+- Schema validation rejects invalid priority, tag count, and confidence values.
+- API returns 401/403 for unauthorized users.
+- API returns 400 for invalid input and 422 for invalid AI output.
+- UI renders loading, error, and success states correctly.
+
+## Trade-offs (Timeboxed)
+
+- No historical analytics dashboard.
+- No advanced retry policy beyond a single safe attempt.
+- Minimal audit logging and telemetry.
 
 ## Assumptions
 
