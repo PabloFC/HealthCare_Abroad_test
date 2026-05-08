@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdminPermission } from "@/lib/auth";
+import { analyzeCaseNote } from "@/lib/triageAi";
+import { recordTriageError, recordTriageResult } from "@/lib/triageStore";
 import { validateTriageRequest } from "@/lib/triageSchemas";
 
 export async function POST(request: Request) {
@@ -36,11 +38,37 @@ export async function POST(request: Request) {
     );
   }
 
+  const analysis = await analyzeCaseNote(noteText);
+
+  if (!analysis.ok) {
+    recordTriageError({
+      caseId,
+      modelUsed: analysis.modelUsed,
+      promptVersion: analysis.promptVersion,
+      durationMs: analysis.durationMs,
+      requestId: analysis.requestId,
+      error: analysis.error,
+    });
+
+    return NextResponse.json(
+      {
+        error: analysis.error,
+        modelUsed: analysis.modelUsed,
+        promptVersion: analysis.promptVersion,
+        durationMs: analysis.durationMs,
+        requestId: analysis.requestId,
+      },
+      { status: analysis.kind === "invalid_output" ? 422 : 500 }
+    );
+  }
+
+  recordTriageResult(analysis.value, caseId);
+
   return NextResponse.json(
     {
-      error: "Triage analysis not implemented yet.",
       caseId: caseId ?? null,
+      ...analysis.value,
     },
-    { status: 501 }
+    { status: 200 }
   );
 }

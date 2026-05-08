@@ -103,11 +103,18 @@ Store fields:
 Mark each item with a check as it is completed.
 
 - [x] Define request/response schemas and shared types.
-- [ ] Build the admin API route with auth, permission check, and validation.
-- [ ] Create the AI service with strict JSON output and fallback handling.
-- [ ] Add minimal persistence layer.
-- [ ] Build the admin UI panel with loading/error/success states.
-- [ ] Document assumptions, limitations, and next steps.
+- [x] Build the admin API route with auth, permission check, and validation.
+- [x] Create the AI service with strict JSON output and fallback handling.
+- [x] Add minimal persistence layer.
+- [x] Build the admin UI panel with loading/error/success states.
+- [x] Document assumptions, limitations, and next steps.
+
+## Implementation Notes
+
+- The AI layer is a deterministic mock that still enforces schema-first JSON output and validation.
+- Persistence is an in-memory store; entries are not durable and reset on server restart.
+- The API returns metadata (`modelUsed`, `promptVersion`, `durationMs`, `requestId`) for auditing.
+- The UI enforces note length before submit and surfaces recoverable errors.
 
 ## Minimal Tests
 
