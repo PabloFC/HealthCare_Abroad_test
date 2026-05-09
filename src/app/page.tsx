@@ -27,6 +27,9 @@ export default function HomePage() {
   const canSubmit =
     noteLength >= NOTE_MIN_LENGTH && noteLength <= NOTE_MAX_LENGTH;
 
+  //You can activate this line to force errors and enable de button when it has less than 1000 characters
+  // const canSubmit = noteLength <= NOTE_MAX_LENGTH;
+
   const { result, error, meta, isSubmitting, submit } = useTriageAnalysis({
     noteText,
     caseId,

@@ -41,7 +41,6 @@ curl -X POST "http://localhost:3000/api/admin/case-triage/ad-hoc/analyze" \
 
 - **Data flow**: UI -> API -> AI service -> validation -> persistence -> UI
 - **Trust boundaries**: validate input before AI, validate output before persistence/UI
-- **Failure handling**: invalid AI output returns `422`, provider errors return `500`
 
 ## Known Limitations
 
