@@ -96,6 +96,25 @@ p {
   gap: 8px;
 }
 
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--ink-700);
+}
+
+.toggle input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--mint-400);
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--ink-500);
+}
+
 label {
   font-size: 14px;
   color: var(--ink-700);

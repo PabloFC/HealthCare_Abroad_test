@@ -23,8 +23,8 @@ export type ValidationResult<T> =
   | { ok: true; value: T }
   | { ok: false; error: string };
 
-const NOTE_MIN_LENGTH = 1000;
-const NOTE_MAX_LENGTH = 5000;
+export const NOTE_MIN_LENGTH = 1000;
+export const NOTE_MAX_LENGTH = 5000;
 const SUMMARY_MAX_LENGTH = 500;
 const TAG_MIN = 3;
 const TAG_MAX = 6;
