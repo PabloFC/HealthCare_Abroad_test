@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { requireAdminPermission } from "@/lib/auth";
-import { analyzeCaseNote } from "@/lib/triageAi";
+import { analyzeCaseNote } from "@/lib/triage/service";
 import { recordTriageError, recordTriageResult } from "@/lib/triageStore";
 import { validateTriageRequest } from "@/lib/triageSchemas";
 
 export async function POST(request: Request) {
+  // This ensures only authorized administrators can submit triage analyses
   const permission = requireAdminPermission(request);
 
   if (!permission.ok) {
@@ -14,6 +15,7 @@ export async function POST(request: Request) {
     );
   }
 
+  // Safe parsing with error handling for malformed JSON
   let body: unknown;
 
   try {
@@ -22,6 +24,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
   }
 
+  // Ensures caseId or noteText is provided with correct types and constraints
   const validation = validateTriageRequest(body);
 
   if (!validation.ok) {
@@ -30,6 +33,7 @@ export async function POST(request: Request) {
 
   const { noteText, caseId } = validation.value;
 
+  // Temporary constraint: noteText is required (until case lookup from DB is implemented)
   if (!noteText) {
     // We do not have a DB layer yet, so caseId-only requests are rejected.
     return NextResponse.json(
@@ -38,6 +42,7 @@ export async function POST(request: Request) {
     );
   }
 
+  // The AI generates a priority level, summary, categorization tags, and confidence score
   const analysis = await analyzeCaseNote(noteText);
 
   if (!analysis.ok) {
@@ -50,6 +55,9 @@ export async function POST(request: Request) {
       error: analysis.error,
     });
 
+    // Return error response with diagnostic metadata
+    // 422: AI returned invalid/unparseable output
+    // 500: Server-side error (API timeout, rate limit, etc.)
     return NextResponse.json(
       {
         error: analysis.error,
@@ -62,8 +70,11 @@ export async function POST(request: Request) {
     );
   }
 
+  // Record analysis result in audit store
   recordTriageResult(analysis.value, caseId);
 
+  //Return successful response with full AI analysis
+  // Includes: summary, priority, tags, confidence, modelUsed, promptVersion, durationMs, requestId
   return NextResponse.json(
     {
       caseId: caseId ?? null,
