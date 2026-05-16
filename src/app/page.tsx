@@ -5,7 +5,7 @@ import { ErrorPanel } from "@/app/components/ErrorPanel";
 import { ResultPanel } from "@/app/components/ResultPanel";
 import { TriageForm } from "@/app/components/TriageForm";
 import { useTriageAnalysis } from "@/hooks/useTriageAnalysis";
-import { NOTE_MAX_LENGTH, NOTE_MIN_LENGTH } from "@/lib/triageSchemas";
+import { NOTE_MAX_LENGTH, NOTE_MIN_LENGTH } from "@/lib/triage/schemas";
 
 export default function HomePage() {
   const [noteText, setNoteText] = useState("");

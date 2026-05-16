@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import type { TriageErrorResponse, TriageResponse } from "@/lib/triageTypes";
+import type { TriageErrorResponse, TriageResponse } from "@/lib/triage/types";
 
 // Extract metadata fields only (for debugging/tracking)
 // Useful to preserve metadata even when an error occurs

@@ -10,11 +10,11 @@ vi.mock("@/lib/auth", () => ({
   requireAdminPermission: () => requireAdminPermission(),
 }));
 
-vi.mock("@/lib/triageAi", () => ({
+vi.mock("@/lib/triage/adapter", () => ({
   analyzeCaseNote: (...args: unknown[]) => analyzeCaseNote(...args),
 }));
 
-vi.mock("@/lib/triageStore", () => ({
+vi.mock("@/lib/triage/store", () => ({
   recordTriageResult: (...args: unknown[]) => recordTriageResult(...args),
   recordTriageError: (...args: unknown[]) => recordTriageError(...args),
 }));

@@ -1,7 +1,5 @@
-import type { TriagePriority, TriageResult } from "@/lib/triageSchemas";
+import type { TriagePriority, TriageResult } from "./schemas";
 
-// In-memory audit store for triage analysis results and errors
-// Maintains a history of all AI analyses for debugging, monitoring, and compliance purposes
 export type TriageStoreEntry = {
   id: string;
   caseId: string | null;
@@ -20,8 +18,6 @@ export type TriageStoreEntry = {
 
 const entries: TriageStoreEntry[] = [];
 
-// Creates a base entry with common metadata fields (id, timestamps, status)
-// Used internally by recordTriageResult and recordTriageError functions
 function createBaseEntry(params: {
   caseId?: string;
   modelUsed: string;
@@ -42,8 +38,6 @@ function createBaseEntry(params: {
   } satisfies TriageStoreEntry;
 }
 
-// Records a successful triage analysis result with all AI-generated fields (summary, priority, tags, confidence)
-// Adds entry to the beginning of the store for easy access to recent results
 export function recordTriageResult(result: TriageResult, caseId?: string) {
   const entry: TriageStoreEntry = {
     ...createBaseEntry({
@@ -64,8 +58,6 @@ export function recordTriageResult(result: TriageResult, caseId?: string) {
   return entry;
 }
 
-// Records a failed triage analysis with error details for audit and debugging purposes
-// Adds entry to the beginning of the store with status "error" and error message
 export function recordTriageError(params: {
   caseId?: string;
   modelUsed: string;
@@ -90,8 +82,6 @@ export function recordTriageError(params: {
   return entry;
 }
 
-// Returns the most recent triage entries (success and error) up to the specified limit (default 20)
-// Useful for audit trails, debugging, and monitoring analysis history
 export function listRecentTriageEntries(limit = 20) {
   return entries.slice(0, limit);
 }

@@ -1,4 +1,4 @@
-import { validateTriageResult } from "@/lib/triageSchemas";
+import { validateTriageResult } from "./schemas";
 import { buildPrompt } from "@/lib/triage/prompt";
 import { MODEL_USED, PROMPT_VERSION, simulateModelResponse } from "@/lib/triage/model";
 import type { TriageAnalysisFailure, TriageAnalysisSuccess } from "@/lib/triage/types";

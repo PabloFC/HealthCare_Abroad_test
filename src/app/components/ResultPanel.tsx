@@ -1,4 +1,4 @@
-import type { TriageResponse } from "@/lib/triageTypes";
+import type { TriageResponse } from "@/lib/triage/types";
 
 type ResultPanelProps = {
   result: TriageResponse;

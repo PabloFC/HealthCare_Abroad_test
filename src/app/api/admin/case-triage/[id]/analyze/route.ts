@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireAdminPermission } from "@/lib/auth";
-import { analyzeCaseNote } from "@/lib/triage/service";
-import { recordTriageError, recordTriageResult } from "@/lib/triageStore";
-import { validateTriageRequest } from "@/lib/triageSchemas";
+import { analyzeCaseNote } from "@/lib/triage/adapter";
+import { recordTriageError, recordTriageResult } from "@/lib/triage/store";
+import { validateTriageRequest } from "@/lib/triage/schemas";
 
 export async function POST(request: Request) {
   // This ensures only authorized administrators can submit triage analyses

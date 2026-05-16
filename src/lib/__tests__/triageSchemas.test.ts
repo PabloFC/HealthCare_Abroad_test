@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { validateTriageRequest, validateTriageResult } from "@/lib/triageSchemas";
+import { validateTriageRequest, validateTriageResult } from "@/lib/triage/schemas";
 
 const baseMetadata = {
   modelUsed: "test-model",
